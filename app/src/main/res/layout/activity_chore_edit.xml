@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@android:style/Theme.Material.Light.NoActionBar"
+    android:theme="@android:style/Theme.Material.Light.Dialog.Presentation"
     tools:context="ca.choremanager.ChoreView">
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:weightSum="1"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="7dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,16 +25,15 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="Chore Name"
-                android:textSize="40sp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp" />
+            <EditText
+                android:id="@+id/editText4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:textSize="30sp"
+                android:background="#00000000"/>
 
         </LinearLayout>
 
@@ -82,13 +81,15 @@
                     android:text="Deadline"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textView3"
+                <EditText
+                    android:id="@+id/editText2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Date"
-                    android:textSize="14sp" />
+                    android:layout_height="26dp"
+                    android:background="#00000000"
+                    android:ems="10"
+                    android:hint="Date"
+                    android:inputType="date" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -104,12 +105,12 @@
                     android:text="Reccuring"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textView14"
+                <Spinner
+                    android:id="@+id/spinner2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Weekly" />
+                    android:layout_weight="1" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -272,11 +273,12 @@
                 android:text="Notes"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/textView4"
+            <EditText
+                android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Insert Notes" />
+                android:ems="10"
+                android:inputType="textMultiLine" />
 
         </LinearLayout>
 
@@ -290,23 +292,11 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Edit Chore" />
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Delete Chore" />
-
-            <Button
-                android:id="@+id/button"
+                android:id="@+id/Confirm Changes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Mark as Complete" />
+                android:text="Confirm Changes" />
         </LinearLayout>
 
     </LinearLayout>
