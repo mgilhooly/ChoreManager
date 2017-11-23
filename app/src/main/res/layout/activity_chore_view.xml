@@ -8,10 +8,12 @@
 
     <LinearLayout
         android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_height="551dp"
+        android:gravity="fill_vertical"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="8dp"
+        android:weightSum="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,13 +34,6 @@
                 android:textSize="40sp"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="0dp" />
-
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:text="Completed" />
 
         </LinearLayout>
 
@@ -214,7 +209,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="130dp"
             android:layout_margin="10dp"
             android:orientation="vertical">
 
@@ -236,22 +231,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="5dp"
+            android:layout_weight="0.11"
             android:gravity="bottom"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button6"
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Edit Chore" />
 
             <Button
                 android:id="@+id/button5"
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Delete Chore" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Mark as Complete" />
         </LinearLayout>
 
     </LinearLayout>
