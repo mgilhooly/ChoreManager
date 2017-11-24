@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@android:style/Theme.Material.Light.Dialog.Presentation"
     tools:context="ca.choremanager.ChoreView">
 
     <LinearLayout
@@ -106,7 +105,7 @@
                     android:textSize="18sp" />
 
                 <Spinner
-                    android:id="@+id/spinner2"
+                    android:id="@+id/recurring_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
@@ -289,6 +288,13 @@
             android:layout_weight="0.11"
             android:gravity="bottom"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/Cnacel_changes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel Changes" />
 
             <Button
                 android:id="@+id/Confirm_Changes"

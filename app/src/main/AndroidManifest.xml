@@ -11,13 +11,15 @@
         android:theme="AppTheme"
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".ChoreView">
+        </activity>
+        <activity android:name=".ShoppingChoreView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShoppingChoreView"></activity>
+        <activity android:name=".ChoreEditView"></activity>
     </application>
 
 </manifest>

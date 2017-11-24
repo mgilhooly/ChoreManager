@@ -19,6 +19,7 @@
         <item>Biweekly</item>
         <item>Monthly</item>
     </string-array>
+    <string name="weekly">Weekly</string>
 
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
