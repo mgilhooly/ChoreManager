@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:weightSum="1"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="7dp">
+        tools:layout_editor_absoluteY="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,11 +29,11 @@
                 android:id="@+id/editText4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00000000"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
-                android:textSize="30sp"
-                android:background="#00000000"/>
+                android:textSize="30sp" />
 
         </LinearLayout>
 
@@ -110,7 +110,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
-
             </LinearLayout>
         </LinearLayout>
 
@@ -292,7 +291,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Confirm Changes"
+                android:id="@+id/Confirm_Changes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

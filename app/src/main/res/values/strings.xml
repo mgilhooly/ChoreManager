@@ -4,4 +4,22 @@
     <string name="title_activity_chore">Chore</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string-array name="user_names">
+        <item>Michael</item>
+        <item>Murad</item>
+        <item>Zelalem</item>
+        <item>Farnaz</item>
+    </string-array>
+
+    <string-array name="recurring_options">
+        <item>None</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Biweekly</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
 </resources>
