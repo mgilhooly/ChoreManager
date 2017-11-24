@@ -116,7 +116,7 @@
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Resources"
+                android:text="Shopping List"
                 android:textSize="20dp" />
 
             <GridLayout
@@ -125,129 +125,99 @@
                 android:layout_gravity="fill_horizontal"
                 android:columnCount="2">
 
-                <LinearLayout
-                    android:layout_width="162dp"
+                <TextView
+                    android:id="@+id/item1"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:layout_rowWeight="1"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:text="Shopping Item #1" />
 
-                    <ImageView
-                        android:id="@+id/toolImage1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_camera" />
-
-                    <TextView
-                        android:id="@+id/toolText1"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="Tool #1" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="162dp"
+                <TextView
+                    android:id="@+id/item2"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Shopping Item #2" />
 
-                    <ImageView
-                        android:id="@+id/toolImage2"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_camera" />
-
-                    <TextView
-                        android:id="@+id/toolText2"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="Tool #2" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="162dp"
+                <TextView
+                    android:id="@+id/item3"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:text="Shopping Item #3" />
 
-                    <ImageView
-                        android:id="@+id/toolImage3"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_camera" />
-
-                    <TextView
-                        android:id="@+id/toolText3"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="Tool #3" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="162dp"
+                <TextView
+                    android:id="@+id/item4"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Shopping Item #4" />
 
-                    <ImageView
-                        android:id="@+id/toolImage4"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_camera" />
-
-                    <TextView
-                        android:id="@+id/toolText4"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="Tool #4" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="162dp"
+                <TextView
+                    android:id="@+id/item5"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:gravity="center_vertical"
+                    android:text="Shopping Item #5" />
 
-                    <ImageView
-                        android:id="@+id/toolImage5"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_camera" />
+                <TextView
+                    android:id="@+id/item6"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #6" />
 
-                    <TextView
-                        android:id="@+id/toolText5"
-                        android:layout_width="121dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="Tool #5" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/item7"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #7" />
 
-                <LinearLayout
-                    android:layout_width="162dp"
+                <TextView
+                    android:id="@+id/item8"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #8" />
+
+                <TextView
+                    android:id="@+id/item9"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #9" />
+
+                <TextView
+                    android:id="@+id/item10"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #10" />
+
+                <TextView
+                    android:id="@+id/item11"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #11" />
+
+                <TextView
+                    android:id="@+id/item12"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #12" />
+
+                <TextView
+                    android:id="@+id/item14"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping Item #13" />
+
+                <TextView
+                    android:id="@+id/seeRest"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Click To See Rest of List" />
 
-                    <ImageView
-                        android:id="@+id/toolImage6"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/ic_menu_camera" />
-
-                    <TextView
-                        android:id="@+id/toolText6"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="Tool #6" />
-                </LinearLayout>
             </GridLayout>
 
         </LinearLayout>
