@@ -16,13 +16,14 @@ public class Chore {
     private User _user;
 
 
-    public Chore (String name, Date deadline, int points, String recurring){
+    public Chore (String name, Date deadline, int points, String recurring, User user){
         _name = name;
         _deadline = deadline;
         _points = points;
-        _recurring =recurring;
+        _recurring = recurring;
         _completed = false;
         _description = "";
+        assignToUser(user);
     }
     public void setName (String name){_name = name;}
     public String getName (){return _name;}
@@ -40,4 +41,27 @@ public class Chore {
     public User getUser () {return _user;}
     public void setRecurring (String recurring){_recurring = recurring;}
     public String getRecurring () {return _recurring;}
+
+    public void assignToUser(User user){
+        _user = user;
+        user.assignChore(this);
+    }
+
+    public void addTool (Tool tool){
+        _tools.add(tool);
+    }
+    public void removeTools (Tool tool){
+        _tools.remove(tool);
+    }
+
+    public void removeUser (User user){
+        user.removeChore(this);
+        _user = null;
+    }
+
+    public void completeChore(){
+        _completed = true;
+        _user.addPoints(_points);
+    }
+
 }
