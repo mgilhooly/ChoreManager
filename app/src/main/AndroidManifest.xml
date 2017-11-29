@@ -16,7 +16,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ChoreView" />
+        <activity
+            android:name=".Schedule"
+            android:label="@string/title_activity_schedule"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WeeklyView"
+            android:label="@string/title_activity_weekly_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Tools"
+            android:label="@string/title_activity_tools"
+            android:theme="@style/AppTheme.NoActionBar" />
+      
+        <activity android:name=".Toolss"></activity>
         <activity android:name=".ShoppingChoreView"></activity>
         <activity android:name=".ChoreEditView" /></application>
-
+    </application>
 </manifest>
