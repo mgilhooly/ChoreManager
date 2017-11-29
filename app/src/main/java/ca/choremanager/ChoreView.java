@@ -110,5 +110,14 @@ public class ChoreView extends AppCompatActivity {
     public void completeChore(){
         chore.completeChore();
     }
+    public void changeToTools(View view){
+        Intent toolsIntent = new Intent(this, Toolss.class);
+        startActivity(toolsIntent);
+    }
+    public void changeToUser(View view){
+        Intent userIntent = new Intent(this, Toolss.class);
+        startActivity(userIntent);
+    }
+
 
 }

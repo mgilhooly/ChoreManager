@@ -369,7 +369,8 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="My To-Do List"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:onClick="changeToUser"/>
         </LinearLayout>
 
         <LinearLayout
@@ -422,7 +423,8 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="Tools"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:onClick="changeToTools"/>
         </LinearLayout>
 
         <LinearLayout
