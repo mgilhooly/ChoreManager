@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class User {
-    private String _name, _email;;
+    private String _name, _email;
     private boolean _parent;
     private int _points;
     private List<Chore> _chores;
