@@ -17,14 +17,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Schedule"
-            android:label="@string/title_activity_schedule" />
-        <activity
             android:name=".WeeklyView"
             android:label="@string/title_activity_weekly_view" />
-        <activity
-            android:name=".Tools"
-            android:label="@string/title_activity_tools" />
         <activity android:name=".Toolss"></activity>
         <activity android:name=".ShoppingChoreView"></activity>
         <activity android:name=".ChoreEditView" />
