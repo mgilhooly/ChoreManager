@@ -72,7 +72,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="tool" />
+                        android:gravity="center_vertical"
+                        android:text="Tool1" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -93,7 +94,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="tool" />
+                        android:gravity="center_vertical"
+                        android:text="Tool2" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -114,7 +116,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="tool" />
+                        android:gravity="center_vertical"
+                        android:text="Tool3" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -135,7 +138,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="tool" />
+                        android:gravity="center_vertical"
+                        android:text="Tool4" />
 
                 </LinearLayout>
 
@@ -157,7 +161,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="tool" />
+                        android:gravity="center_vertical"
+                        android:text="Tool5" />
                 </LinearLayout>
             </LinearLayout>
 

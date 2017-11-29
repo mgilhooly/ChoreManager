@@ -29,7 +29,8 @@
             android:name=".Tools"
             android:label="@string/title_activity_tools"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Toolss"></activity>
+        <activity android:name=".Toolss" />
+        <activity android:name=".AddChore"></activity>
     </application>
 
 </manifest>
