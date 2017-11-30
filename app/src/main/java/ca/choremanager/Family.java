@@ -1,6 +1,9 @@
 package ca.choremanager;
 
-import java.util.Collections;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,18 +11,39 @@ import java.util.List;
  */
 
 public class Family {
-    private List<User> family;
-    private List<Tool> tools;
+    private ArrayList<User> _family;
+    private ArrayList<Tool> _tools;
+    private String _id;
+    private DatabaseReference dR;
 
-    public Family (){
-        family = Collections.emptyList();
-        tools = Collections.emptyList();
+    public Family (String id){
+        _id = id;
+        _family = new ArrayList<User>();
+        _tools = new ArrayList<Tool>();
     }
+    public Family(){}
+    public String getID (){return _id;}
+    public void setId(String id){_id = id;}
+    public void setFamily(ArrayList<User> family){_family = family;}
+    public List getFamily(){return _family;}
+    public void setTools(ArrayList<Tool> tools){_tools = tools;}
+    public List getTools(){return _tools;}
 
-    public void addUser(User user){
-        family.add(user);
+    public void addUser(User user) {
+        dR = FirebaseDatabase.getInstance().getReference("family").child(_id);
+        _family.add(user);
+        dR.setValue(this);
     }
-    public void removeUser(User user){ family.remove(user);}
-    public void addTool (Tool tool) {tools.add(tool);}
-    public void removeTool (Tool tool) {tools.remove(tool);}
+    public void removeUser(User user){
+        dR = FirebaseDatabase.getInstance().getReference("family").child(_id);
+        _family.remove(user);
+        dR.setValue(this);}
+    public void addTool (Tool tool) {
+        dR = FirebaseDatabase.getInstance().getReference("family").child(_id);
+        _tools.add(tool);
+        dR.setValue(this);}
+    public void removeTool (Tool tool) {
+        dR = FirebaseDatabase.getInstance().getReference("family").child(_id);
+        _tools.remove(tool);
+        dR.setValue(this);}
 }

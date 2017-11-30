@@ -1,5 +1,6 @@
 package ca.choremanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -7,7 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +32,29 @@ public class ChoreEditView extends AppCompatActivity {
     EditText dateEntry;
     private Chore chore;
     DatabaseReference dR;
-
+    String choreId;
 
     protected void onCreate(Bundle savedInstanceState) {
          setTheme(R.style.AppTheme);
          setContentView(R.layout.activity_chore_edit);
-
         super.onCreate(savedInstanceState);
+        mName  = findViewById(editName);
+        mNotes = findViewById(editNotes);
+        Intent ii = getIntent();
+        choreId = (String)ii.getExtras().get("id");
+        dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
+        dR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                chore = dataSnapshot.getValue(Chore.class);
+                mName.setText(chore.getName());
+                mNotes.setText(chore.getDescription());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
         addItemsOnRecurring();
     }
 
@@ -53,13 +74,12 @@ public class ChoreEditView extends AppCompatActivity {
     }
 
     protected void editChore(View view){
-        mName  = findViewById(editName);
         chore.setName(mName.getText().toString());
-        mNotes = findViewById(editNotes);
         mRecurring = findViewById(recurring_spinner);
         chore.setDescription(mNotes.getText().toString());
-        if (mRecurring.toString() != "Set Recurring") {chore.setRecurring(mRecurring.toString());}
+        if (mRecurring.toString() != "Set Recurring") {chore.setRecurring(mRecurring.getSelectedItem().toString());}
         dR.setValue(chore);
+        finish();
     }
 
     protected void cancelEdit(View view){

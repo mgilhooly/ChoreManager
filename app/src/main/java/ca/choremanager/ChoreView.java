@@ -14,11 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static ca.choremanager.R.id.change_user;
+import static ca.choremanager.R.id.choreNotes;
+import static ca.choremanager.R.id.choreUserName;
 
 public class ChoreView extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -26,15 +35,19 @@ public class ChoreView extends AppCompatActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private Chore chore;
+    private TextView mChoreUserName, mChoreDate, mChoreNotes;
+
+    DatabaseReference databaseFamily,databaseUser, databaseChore;
+    String choreId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        choreId = "-L-CrjlM1prNEUl-q-al";
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_chore_view);
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        final Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         mTitle = mDrawerTitle = getTitle();
@@ -59,6 +72,22 @@ public class ChoreView extends AppCompatActivity {
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         addItemsOnChangeUser();
+        databaseChore = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
+        databaseChore.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                chore = dataSnapshot.getValue(Chore.class);
+                mChoreNotes = findViewById(choreNotes);
+                mChoreUserName = findViewById(choreUserName);
+                mChoreNotes.setText(chore.getDescription());
+                mChoreUserName.setText(chore.getUser().getName());
+                myToolbar.setTitle(chore.getName());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,6 +114,7 @@ public class ChoreView extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.action_edit:
                 Intent editIntent = new Intent(this, ChoreEditView.class);
+                editIntent.putExtra("id", choreId);
                 startActivity(editIntent);
                 return true;
             case R.id.action_delete:
@@ -107,17 +137,8 @@ public class ChoreView extends AppCompatActivity {
                 return false;
         }
     }
-    public void completeChore(){
+    public void completeChore(View view){
         chore.completeChore();
+        databaseChore.setValue(chore);
     }
-    public void changeToTools(View view){
-        Intent toolsIntent = new Intent(this, Toolss.class);
-        startActivity(toolsIntent);
-    }
-    public void changeToUser(View view){
-        Intent userIntent = new Intent(this, Toolss.class);
-        startActivity(userIntent);
-    }
-
-
 }
