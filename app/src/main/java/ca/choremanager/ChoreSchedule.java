@@ -47,14 +47,13 @@ public class ChoreSchedule extends Activity {
             }
         });
 
-        listViewChores.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listViewChores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Chore chore = chores.get(i); // Intent to view chore details
                 Intent viewIntent = new Intent(ChoreSchedule.this, ChoreView.class);
                 viewIntent.putExtra("id", chore.getId());
                 startActivity(viewIntent);
-                return true;
             }
         });
     }

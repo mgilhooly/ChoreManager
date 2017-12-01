@@ -79,9 +79,11 @@ public class Chore {
     }
 
     public void completeChore(){
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-        _completed = true;
-        _user.addPoints(_points);
-        dR.setValue(this);
+        if (!_completed) {
+            dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
+            _completed = true;
+            _user.addPoints(_points);
+            dR.setValue(this);
+        }
     }
 }

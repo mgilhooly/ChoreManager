@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context="ca.choremanager.ChoreView">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Chores"
-        android:textAlignment="center" />
-
     <ListView
         android:id="@+id/listViewChores"
         android:layout_width="match_parent"
