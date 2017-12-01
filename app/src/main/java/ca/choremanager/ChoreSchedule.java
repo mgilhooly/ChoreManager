@@ -1,12 +1,15 @@
 package ca.choremanager;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +31,7 @@ public class ChoreSchedule extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chore_schedule);
 
@@ -54,6 +57,30 @@ public class ChoreSchedule extends Activity {
                 Intent viewIntent = new Intent(ChoreSchedule.this, ChoreView.class);
                 viewIntent.putExtra("id", chore.getId());
                 startActivity(viewIntent);
+            }
+        });
+        listViewChores.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final Chore c = chores.get(i);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChoreSchedule.this);
+                builder.setMessage(R.string.dialog_message)
+                        .setTitle(R.string.dialog_title);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("chore").child(c.getId());
+                        dR.removeValue();
+                        Toast.makeText(getApplicationContext(), "Chore Deleted", Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
             }
         });
     }
