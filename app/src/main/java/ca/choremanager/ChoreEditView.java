@@ -35,6 +35,7 @@ public class ChoreEditView extends AppCompatActivity {
     String choreId;
     List<User> list2 = new ArrayList<>();
     private Chore chore;
+    private ValueEventListener mListener;
 
     protected void onCreate(Bundle savedInstanceState) {
         List<String> list2 = new ArrayList<String>();
@@ -47,7 +48,7 @@ public class ChoreEditView extends AppCompatActivity {
         choreId = (String)ii.getExtras().get("id");
         dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
         mUsers = findViewById(userSpinner);
-        dR.addValueEventListener(new ValueEventListener() {
+        dR.addValueEventListener(mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 chore = dataSnapshot.getValue(Chore.class);
@@ -118,6 +119,16 @@ public class ChoreEditView extends AppCompatActivity {
     }
     protected void cancelEdit(View view){
         finish();
+    }
+
+    @Override
+    public void onPause() {
+
+        // Remove post value event listener
+        if (mListener != null && dR != null) {
+            dR.removeEventListener(mListener);
+        }
+        super.onPause();
     }
 
 }

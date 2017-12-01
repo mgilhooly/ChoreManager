@@ -40,6 +40,7 @@ public class ChoreView extends AppCompatActivity {
     private CharSequence mTitle;
     private Chore chore;
     private TextView mChoreUserName, mChoreDate, mChoreNotes, mChoreRecurring;
+    private ValueEventListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class ChoreView extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         addItemsOnChangeUser();
         databaseChore = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
-        databaseChore.addValueEventListener(new ValueEventListener() {
+        databaseChore.addValueEventListener(mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 chore = dataSnapshot.getValue(Chore.class);
@@ -160,5 +161,24 @@ public class ChoreView extends AppCompatActivity {
     public void changeToUser(View view) {
         Intent userIntent = new Intent(this, UserProfileActivity.class);
         startActivity(userIntent);
+    }
+
+    public void cancelChoreView(View view) {
+        this.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public void onPause() {
+
+        // Remove post value event listener
+        if (mListener != null && databaseChore != null) {
+            databaseChore.removeEventListener(mListener);
+        }
+        super.onPause();
     }
 }

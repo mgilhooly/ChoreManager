@@ -33,13 +33,13 @@
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/my_toolbar"
-                    android:theme="@style/ToolbarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginBottom="10dp"
                     android:elevation="4dp"
                     android:padding="0dp"
                     android:paddingBottom="10dp"
+                    android:theme="@style/ToolbarStyle"
                     app:title="Chore Name"
                     tools:layout_editor_absoluteX="-6dp"
                     tools:layout_editor_absoluteY="8dp" />
@@ -295,12 +295,20 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/cancelButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:onClick="cancelChoreView"
+                        android:text="Go back to Schedule" />
+                    <Button
                         android:id="@+id/button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:onClick="completeChore"
                         android:text="Mark as Complete" />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -311,15 +319,15 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:background="@color/colorPrimary"
         android:elevation="0dp"
         android:orientation="vertical"
         android:theme="@android:style/Theme.Material.Light"
-        android:weightSum="1"
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start">
+        android:weightSum="1">
 
 
         <LinearLayout
@@ -368,10 +376,10 @@
                 android:layout_weight="1"
                 android:background="?android:attr/colorBackground"
                 android:gravity="center_vertical"
+                android:onClick="changeToDo"
                 android:padding="10dp"
                 android:text="My To-Do List"
-                android:textSize="18sp"
-                android:onClick="changeToDo"/>
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -386,9 +394,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:onClick="changeToDo"
                 android:padding="10dp"
                 android:text="All To-Do List"
-                android:onClick="changeToDo"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -423,10 +431,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:onClick="changeToTools"
                 android:padding="10dp"
                 android:text="Tools"
-                android:textSize="18sp"
-                android:onClick="changeToTools"/>
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
