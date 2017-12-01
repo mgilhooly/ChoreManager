@@ -160,4 +160,8 @@ public class ChoreView extends AppCompatActivity {
         Intent userIntent = new Intent(this, UserProfileActivity.class);
         startActivity(userIntent);
     }
+    public void changeToDo(View view){
+        Intent choreScheduleIntent = new Intent(this, choreSchedule.class);
+        startActivity(choreScheduleIntent);
+    }
 }
