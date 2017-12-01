@@ -20,16 +20,16 @@ public class Chore {
     private User _user;
     private DatabaseReference dR;
 
-    public Chore (String id, String name, Date deadline, int points, String recurring, User user){
+    public Chore (String id, String name, Date deadline, int points, String recurring, String notes, User user){
         _id = id;
         _name = name;
         _deadline = deadline;
         _points = points;
         _recurring = recurring;
         _completed = false;
-        _description = "";
+        _description = notes;
         _tools = new ArrayList<Tool>();
-        assignToUser(user);
+        _user = user;
     }
     public Chore(){}
     public String getId () {return _id;}
@@ -62,7 +62,7 @@ public class Chore {
     public void assignToUser(User user){
         dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
         _user = user;
-        user.assignChore(this);
+        user.assignChore(_id);
         dR.setValue(this);
     }
 

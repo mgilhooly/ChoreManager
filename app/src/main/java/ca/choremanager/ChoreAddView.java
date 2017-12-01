@@ -1,6 +1,5 @@
 package ca.choremanager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static ca.choremanager.R.id.editName;
@@ -27,7 +27,7 @@ import static ca.choremanager.R.id.userSpinner;
  * Created by michaelgilhooly on 2017-11-24.
  */
 
-public class ChoreEditView extends AppCompatActivity {
+public class ChoreAddView extends AppCompatActivity {
     EditText mNotes, mName;
     Spinner mRecurring, mUsers;
     EditText dateEntry;
@@ -39,25 +39,11 @@ public class ChoreEditView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         List<String> list2 = new ArrayList<String>();
          setTheme(R.style.AppTheme);
-         setContentView(R.layout.activity_chore_edit);
+         setContentView(R.layout.activity_chore_add);
         super.onCreate(savedInstanceState);
         mName  = findViewById(editName);
         mNotes = findViewById(editNotes);
-        Intent ii = getIntent();
-        choreId = (String)ii.getExtras().get("id");
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
-        dR.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                chore = dataSnapshot.getValue(Chore.class);
-                mName.setText(chore.getName());
-                mNotes.setText(chore.getDescription());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        mUsers = findViewById(userSpinner);
         addItemsOnRecurring();
         addItemsOnUser();
     }
@@ -77,13 +63,18 @@ public class ChoreEditView extends AppCompatActivity {
         spinner.setAdapter(dataAdapter);
     }
 
-    protected void editChore(View view){
-        chore.setName(mName.getText().toString());
+    protected void addChore(View view){
+        dR = FirebaseDatabase.getInstance().getReference("chore");
+        String name = mName.getText().toString();
         mRecurring = findViewById(recurring_spinner);
-        chore.setDescription(mNotes.getText().toString());
-        if (mRecurring.toString() != "Set Recurring") {chore.setRecurring(mRecurring.getSelectedItem().toString());}
-        if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()){chore.setUser(list2.get(mUsers.getSelectedItemPosition()));}
-        dR.setValue(chore);
+        String notes = mNotes.getText().toString();
+        String recurring = mRecurring.getSelectedItem().toString();
+        User user = list2.get(mUsers.getSelectedItemPosition());
+
+        String id = dR.push().getKey();
+        chore = new Chore(id,name, new Date(0,0,0), 5, recurring, notes, user);
+        dR.child(id).setValue(chore);
+        user.assignChore(id);
         finish();
     }
     protected void addItemsOnUser(){
