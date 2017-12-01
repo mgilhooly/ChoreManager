@@ -26,7 +26,7 @@ public class User {
         _email = email;
         _points = 0;
         _chores = new ArrayList<>();
-        family.addUser(this);
+        //family.addUser(this);
     }
     public User (){}
     public String getId(){return _id;}

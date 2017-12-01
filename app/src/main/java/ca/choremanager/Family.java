@@ -24,16 +24,24 @@ public class Family {
     public Family(){}
     public String getID (){return _id;}
     public void setId(String id){_id = id;}
-    public void setFamily(ArrayList<User> family){_family = family;}
+
     public List getFamily(){return _family;}
-    public void setTools(ArrayList<Tool> tools){_tools = tools;}
+
+    public void setFamily(ArrayList<User> family) {
+        _family = family;
+    }
+
     public List getTools(){return _tools;}
 
-    public void addUser(User user) {
+    public void setTools(ArrayList<Tool> tools) {
+        _tools = tools;
+    }
+
+    /*public void addUser(User user) {
         dR = FirebaseDatabase.getInstance().getReference("family").child(_id);
         _family.add(user);
         dR.setValue(this);
-    }
+    }*/
     public void removeUser(User user){
         dR = FirebaseDatabase.getInstance().getReference("family").child(_id);
         _family.remove(user);

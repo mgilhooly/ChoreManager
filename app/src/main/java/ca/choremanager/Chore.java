@@ -12,11 +12,11 @@ import java.util.List;
  */
 
 public class Chore {
+    List<Tool> _tools;
     private String _name, _description, _recurring, _id;
     private Date _deadline;
     private int _points;
     private boolean _completed;
-    List<Tool> _tools;
     private User _user;
     private DatabaseReference dR;
 
@@ -30,6 +30,7 @@ public class Chore {
         _description = notes;
         _tools = new ArrayList<Tool>();
         _user = user;
+
     }
     public Chore(){}
     public String getId () {return _id;}
@@ -58,13 +59,6 @@ public class Chore {
 
     public String getRecurring () {return _recurring;}
     public void setRecurring (String recurring){_recurring = recurring;}
-
-    public void assignToUser(User user){
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-        _user = user;
-        user.assignChore(_id);
-        dR.setValue(this);
-    }
 
     public void addTool (Tool tool){
         dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);

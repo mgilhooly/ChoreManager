@@ -31,10 +31,10 @@ public class ChoreEditView extends AppCompatActivity {
     EditText mNotes, mName;
     Spinner mRecurring, mUsers;
     EditText dateEntry;
-    private Chore chore;
     DatabaseReference dR;
     String choreId;
     List<User> list2 = new ArrayList<>();
+    private Chore chore;
 
     protected void onCreate(Bundle savedInstanceState) {
         List<String> list2 = new ArrayList<String>();
@@ -82,7 +82,7 @@ public class ChoreEditView extends AppCompatActivity {
         mRecurring = findViewById(recurring_spinner);
         chore.setDescription(mNotes.getText().toString());
         if (mRecurring.toString() != "Set Recurring") {chore.setRecurring(mRecurring.getSelectedItem().toString());}
-        if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()){chore.setUser(list2.get(mUsers.getSelectedItemPosition()));}
+        //if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()){chore.setUser(list2.get(mUsers.getSelectedItemPosition()));}
         dR.setValue(chore);
         finish();
     }

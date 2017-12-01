@@ -31,10 +31,10 @@ public class ChoreAddView extends AppCompatActivity {
     EditText mNotes, mName;
     Spinner mRecurring, mUsers;
     EditText dateEntry;
-    private Chore chore;
     DatabaseReference dR;
     String choreId;
     List<User> list2 = new ArrayList<>();
+    private Chore chore;
 
     protected void onCreate(Bundle savedInstanceState) {
         List<String> list2 = new ArrayList<String>();
@@ -74,7 +74,6 @@ public class ChoreAddView extends AppCompatActivity {
         String id = dR.push().getKey();
         chore = new Chore(id,name, new Date(0,0,0), 5, recurring, notes, user);
         dR.child(id).setValue(chore);
-        user.assignChore(id);
         finish();
     }
     protected void addItemsOnUser(){

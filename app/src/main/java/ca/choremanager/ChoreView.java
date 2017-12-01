@@ -32,6 +32,8 @@ import static ca.choremanager.R.id.choreUserName;
 import static ca.choremanager.R.id.recurringView;
 
 public class ChoreView extends AppCompatActivity {
+    DatabaseReference databaseChore;
+    String choreId;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
@@ -39,14 +41,13 @@ public class ChoreView extends AppCompatActivity {
     private Chore chore;
     private TextView mChoreUserName, mChoreDate, mChoreNotes, mChoreRecurring;
 
-    DatabaseReference databaseFamily,databaseUser, databaseChore;
-    String choreId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        choreId = "-L-CrjlM1prNEUl-q-al";
+
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        Intent ii = getIntent();
+        choreId = (String) ii.getExtras().get("id");
 
         setContentView(R.layout.activity_chore_view);
         final Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -159,9 +160,5 @@ public class ChoreView extends AppCompatActivity {
     public void changeToUser(View view) {
         Intent userIntent = new Intent(this, UserProfileActivity.class);
         startActivity(userIntent);
-    }
-    public void changeToDo(View view){
-        Intent choreScheduleIntent = new Intent(this, choreSchedule.class);
-        startActivity(choreScheduleIntent);
     }
 }
