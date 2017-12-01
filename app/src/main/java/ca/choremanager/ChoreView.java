@@ -26,8 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ca.choremanager.R.id.change_user;
+import static ca.choremanager.R.id.choreDate;
 import static ca.choremanager.R.id.choreNotes;
 import static ca.choremanager.R.id.choreUserName;
+import static ca.choremanager.R.id.recurringView;
 
 public class ChoreView extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -35,7 +37,7 @@ public class ChoreView extends AppCompatActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private Chore chore;
-    private TextView mChoreUserName, mChoreDate, mChoreNotes;
+    private TextView mChoreUserName, mChoreDate, mChoreNotes, mChoreRecurring;
 
     DatabaseReference databaseFamily,databaseUser, databaseChore;
     String choreId;
@@ -82,6 +84,11 @@ public class ChoreView extends AppCompatActivity {
                 mChoreNotes.setText(chore.getDescription());
                 mChoreUserName.setText(chore.getUser().getName());
                 myToolbar.setTitle(chore.getName());
+                mChoreRecurring = findViewById(recurringView);
+                mChoreRecurring.setText(chore.getRecurring());
+                mChoreDate = findViewById(choreDate);
+                String date = chore.getDeadline().getYear()+"-"+chore.getDeadline().getMonth()+"-"+chore.getDeadline().getDay();
+                mChoreDate.setText(date);
             }
 
             @Override
@@ -89,15 +96,15 @@ public class ChoreView extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    public void addItemsOnChangeUser() {
 
+    public void addItemsOnChangeUser() {
         Spinner spinner = findViewById(change_user);
         List<String> list = new ArrayList<String>();
         list.add("Switch User");
@@ -110,6 +117,7 @@ public class ChoreView extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
     }
+
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.action_edit:
@@ -137,8 +145,19 @@ public class ChoreView extends AppCompatActivity {
                 return false;
         }
     }
+
     public void completeChore(View view){
         chore.completeChore();
         databaseChore.setValue(chore);
+    }
+
+    public void changeToTools(View view){
+        Intent toolsIntent = new Intent(this, Toolss.class);
+        startActivity(toolsIntent);
+    }
+
+    public void changeToUser(View view) {
+        Intent userIntent = new Intent(this, UserProfileActivity.class);
+        startActivity(userIntent);
     }
 }

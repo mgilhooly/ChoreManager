@@ -20,7 +20,6 @@ public class Chore {
     private User _user;
     private DatabaseReference dR;
 
-
     public Chore (String id, String name, Date deadline, int points, String recurring, User user){
         _id = id;
         _name = name;

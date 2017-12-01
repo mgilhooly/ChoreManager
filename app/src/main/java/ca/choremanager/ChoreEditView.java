@@ -20,6 +20,7 @@ import java.util.List;
 import static ca.choremanager.R.id.editName;
 import static ca.choremanager.R.id.editNotes;
 import static ca.choremanager.R.id.recurring_spinner;
+import static ca.choremanager.R.id.userSpinner;
 
 
 /**
@@ -28,13 +29,15 @@ import static ca.choremanager.R.id.recurring_spinner;
 
 public class ChoreEditView extends AppCompatActivity {
     EditText mNotes, mName;
-    Spinner mRecurring;
+    Spinner mRecurring, mUsers;
     EditText dateEntry;
     private Chore chore;
     DatabaseReference dR;
     String choreId;
+    List<User> list2 = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
+        List<String> list2 = new ArrayList<String>();
          setTheme(R.style.AppTheme);
          setContentView(R.layout.activity_chore_edit);
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class ChoreEditView extends AppCompatActivity {
             }
         });
         addItemsOnRecurring();
+        addItemsOnUser();
     }
 
     public void addItemsOnRecurring() {
@@ -78,11 +82,37 @@ public class ChoreEditView extends AppCompatActivity {
         mRecurring = findViewById(recurring_spinner);
         chore.setDescription(mNotes.getText().toString());
         if (mRecurring.toString() != "Set Recurring") {chore.setRecurring(mRecurring.getSelectedItem().toString());}
+        if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()){chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
         dR.setValue(chore);
         finish();
     }
+    protected void addItemsOnUser(){
+        final Spinner spinner = findViewById(userSpinner);
+        final List<String> list = new ArrayList<String>();
 
+        dR = FirebaseDatabase.getInstance().getReference("user");
+        dR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    list.add(user.getName());
+                    list2.add(user);
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                            android.R.layout.simple_spinner_item, list);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(dataAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     protected void cancelEdit(View view){
         finish();
     }
+
 }

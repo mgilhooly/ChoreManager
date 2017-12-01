@@ -33,7 +33,7 @@ public class User {
     public void setId(String id){_id = id;}
     public String getName () {return _name;}
     public void setName (String name){_name = name;}
-    public boolean isParent () {return _parent;}
+    public boolean getParent () {return _parent;}
     public void setParent (boolean parent){_parent = parent;}
     public String getEmail() {return _email;}
     public void setEmail(String email){_email=email;}

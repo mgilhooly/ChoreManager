@@ -22,5 +22,6 @@
         </activity>
         <activity android:name=".ShoppingChoreView"></activity>
         <activity android:name=".ChoreEditView" />
+        <activity android:name=".UserProfileActivity"></activity>
     </application>
 </manifest>
