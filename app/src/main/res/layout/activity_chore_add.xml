@@ -287,20 +287,20 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Cnacel_changes"
+                android:id="@+id/cancelChore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="cancelEdit"
-                android:text="Cancel Changes" />
+                android:text="Cancel Add" />
 
             <Button
-                android:id="@+id/Confirm_Changes"
+                android:id="@+id/confimNew"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:onClick="editChore"
-                android:text="Confirm Changes" />
+                android:onClick="addChore"
+                android:text="Add New Chore" />
         </LinearLayout>
 
     </LinearLayout>

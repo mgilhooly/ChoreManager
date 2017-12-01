@@ -41,4 +41,10 @@
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+
+    <string name="dialog_title">Delete this chore?</string>
+    <string name="dialog_message">Are you sure you want to continue? Continuing will permanently delete this chore. </string>
+    <string name="ok">Delete Chore</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_activity_chore_schedule">choreSchedule</string>
 </resources>

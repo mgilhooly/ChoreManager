@@ -59,7 +59,7 @@
                         app:srcCompat="@mipmap/ic_launcher_round" />
 
                     <TextView
-                        android:id="@+id/userName"
+                        android:id="@+id/choreUserName"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:gravity="left|center_vertical"
@@ -88,6 +88,7 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id="@+id/choreDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -109,7 +110,7 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/deadline"
+                            android:id="@+id/recurringView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -277,7 +278,7 @@
                         android:textSize="20dp" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/choreNotes"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="Insert Notes" />
@@ -298,6 +299,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:onClick="completeChore"
                         android:text="Mark as Complete" />
                 </LinearLayout>
 
@@ -368,7 +370,8 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="My To-Do List"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:onClick="changeToDo"/>
         </LinearLayout>
 
         <LinearLayout
@@ -385,6 +388,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="All To-Do List"
+                android:onClick="changeToDo"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -421,7 +425,8 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="Tools"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:onClick="changeToTools"/>
         </LinearLayout>
 
         <LinearLayout

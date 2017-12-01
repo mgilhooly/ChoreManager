@@ -1,39 +1,59 @@
 package ca.choremanager;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static ca.choremanager.R.id.change_user;
+import static ca.choremanager.R.id.choreDate;
+import static ca.choremanager.R.id.choreNotes;
+import static ca.choremanager.R.id.choreUserName;
+import static ca.choremanager.R.id.recurringView;
 
 public class ChoreView extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private Chore chore;
+    private TextView mChoreUserName, mChoreDate, mChoreNotes, mChoreRecurring;
+
+    DatabaseReference databaseFamily,databaseUser, databaseChore;
+    String choreId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        choreId = "-L-CrjlM1prNEUl-q-al";
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_chore_view);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        final Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
 
@@ -54,17 +74,38 @@ public class ChoreView extends AppCompatActivity {
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         addItemsOnChangeUser();
+        databaseChore = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
+        databaseChore.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                chore = dataSnapshot.getValue(Chore.class);
+                mChoreNotes = findViewById(choreNotes);
+                mChoreUserName = findViewById(choreUserName);
+                mChoreNotes.setText(chore.getDescription());
+                mChoreUserName.setText(chore.getUser().getName());
+                myToolbar.setTitle(chore.getName());
+                mChoreRecurring = findViewById(recurringView);
+                mChoreRecurring.setText(chore.getRecurring());
+                mChoreDate = findViewById(choreDate);
+                String date = chore.getDeadline().getYear()+"-"+chore.getDeadline().getMonth()+"-"+chore.getDeadline().getDay();
+                mChoreDate.setText(date);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    public void addItemsOnChangeUser() {
 
-        Spinner spinner = (Spinner) findViewById(change_user);
+    public void addItemsOnChangeUser() {
+        Spinner spinner = findViewById(change_user);
         List<String> list = new ArrayList<String>();
         list.add("Switch User");
         list.add("Michael");
@@ -75,5 +116,52 @@ public class ChoreView extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.action_edit:
+                Intent editIntent = new Intent(this, ChoreEditView.class);
+                editIntent.putExtra("id", choreId);
+                startActivity(editIntent);
+                return true;
+            case R.id.action_delete:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.dialog_message)
+                        .setTitle(R.string.dialog_title);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            default:
+                return false;
+        }
+    }
+
+    public void completeChore(View view){
+        chore.completeChore();
+        databaseChore.setValue(chore);
+    }
+
+    public void changeToTools(View view){
+        Intent toolsIntent = new Intent(this, Toolss.class);
+        startActivity(toolsIntent);
+    }
+
+    public void changeToUser(View view) {
+        Intent userIntent = new Intent(this, UserProfileActivity.class);
+        startActivity(userIntent);
+    }
+    public void changeToDo(View view){
+        Intent choreScheduleIntent = new Intent(this, choreSchedule.class);
+        startActivity(choreScheduleIntent);
     }
 }
