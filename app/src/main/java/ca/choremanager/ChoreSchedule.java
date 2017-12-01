@@ -28,14 +28,11 @@ public class ChoreSchedule extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dR = FirebaseDatabase.getInstance().getReference("user");
-        String id = dR.push().getKey();
-        User u = new User(id, "Farnaz", true, "", new Family(""));
-        dR.child(id).setValue(u);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chore_schedule);
 
-        databaseChores = FirebaseDatabase.getInstance().getReference("chores");
+        databaseChores = FirebaseDatabase.getInstance().getReference("chore");
         listViewChores = findViewById(R.id.listViewChores);
         buttonAddChore = findViewById(R.id.addButton);
 
@@ -80,7 +77,6 @@ public class ChoreSchedule extends Activity {
                     Chore chore = postSnapshot.getValue(Chore.class);
                     //adding product to the list
                     chores.add(chore);
-                    System.out.println("##############################");
                 }
 
                 //creating adapter

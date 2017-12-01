@@ -31,7 +31,7 @@ public class ChoreEditView extends AppCompatActivity {
     EditText mNotes, mName;
     Spinner mRecurring, mUsers;
     EditText dateEntry;
-    DatabaseReference dR;
+    DatabaseReference dR, userdR;
     String choreId;
     List<User> list2 = new ArrayList<>();
     private Chore chore;
@@ -46,6 +46,7 @@ public class ChoreEditView extends AppCompatActivity {
         Intent ii = getIntent();
         choreId = (String)ii.getExtras().get("id");
         dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
+        mUsers = findViewById(userSpinner);
         dR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -81,17 +82,21 @@ public class ChoreEditView extends AppCompatActivity {
         chore.setName(mName.getText().toString());
         mRecurring = findViewById(recurring_spinner);
         chore.setDescription(mNotes.getText().toString());
-        if (mRecurring.toString() != "Set Recurring") {chore.setRecurring(mRecurring.getSelectedItem().toString());}
-        //if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()){chore.setUser(list2.get(mUsers.getSelectedItemPosition()));}
+        if (mRecurring.toString() != "Set Recurring") {
+            chore.setRecurring(mRecurring.getSelectedItem().toString());
+        }
+        if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
+            chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
+        }
         dR.setValue(chore);
         finish();
     }
     protected void addItemsOnUser(){
-        final Spinner spinner = findViewById(userSpinner);
+        final Spinner mUser = findViewById(userSpinner);
         final List<String> list = new ArrayList<String>();
 
-        dR = FirebaseDatabase.getInstance().getReference("user");
-        dR.addValueEventListener(new ValueEventListener() {
+        userdR = FirebaseDatabase.getInstance().getReference("user");
+        userdR.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
@@ -101,7 +106,7 @@ public class ChoreEditView extends AppCompatActivity {
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_spinner_item, list);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner.setAdapter(dataAdapter);
+                    mUser.setAdapter(dataAdapter);
                 }
             }
 
