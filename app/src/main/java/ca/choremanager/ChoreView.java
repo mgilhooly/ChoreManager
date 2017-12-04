@@ -29,8 +29,8 @@ import java.util.List;
 import static ca.choremanager.R.id.change_user;
 import static ca.choremanager.R.id.choreDate;
 import static ca.choremanager.R.id.choreNotes;
+import static ca.choremanager.R.id.chorePoints;
 import static ca.choremanager.R.id.choreUserName;
-import static ca.choremanager.R.id.recurringView;
 
 public class ChoreView extends AppCompatActivity {
     DatabaseReference choreRef, userRef;
@@ -66,8 +66,8 @@ public class ChoreView extends AppCompatActivity {
                 mChoreUserName = findViewById(choreUserName);
                 mChoreNotes.setText(chore.getDescription());
                 myToolbar.setTitle(chore.getName());
-                mChoreRecurring = findViewById(recurringView);
-                mChoreRecurring.setText(chore.getPoints());
+                mChoreRecurring = findViewById(chorePoints);
+                mChoreRecurring.setText(Integer.toString(chore.getPoints()));
                 mChoreDate = findViewById(choreDate);
                 String date = chore.getDeadline().getYear() + "-" + chore.getDeadline().getMonth() + "-" + chore.getDeadline().getDay();
                 mChoreDate.setText(date);
@@ -143,6 +143,7 @@ public class ChoreView extends AppCompatActivity {
                 if (activeUser.getParent()) {
                     Intent editIntent = new Intent(this, ChoreEditView.class);
                     editIntent.putExtra("choreId", choreId);
+                    editIntent.putExtra("userId", userId);
                     startActivity(editIntent);
                 } else {
                     Toast.makeText(getApplicationContext(), "You need to be an adult before you can edit chores.", Toast.LENGTH_LONG).show();
@@ -170,9 +171,13 @@ public class ChoreView extends AppCompatActivity {
     }
 
     public void completeChore(View view){
-        choreRef.child("completed").setValue(true);
-        userRef.child(choreUser.getId()).child("points")
-                .setValue(choreUser.getPoints() + chore.getPoints());
+        if (!chore.getCompleted()) {
+            choreRef.child("completed").setValue(true);
+            userRef.child(choreUser.getId()).child("points")
+                    .setValue(choreUser.getPoints() + chore.getPoints());
+        } else {
+            Toast.makeText(getApplicationContext(), "This chore has already been completed", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -204,5 +209,12 @@ public class ChoreView extends AppCompatActivity {
         }
         super.onPause();
     }
+
+    @Override
+    public void onResume() {
+        choreRef.addValueEventListener(mListener);
+        super.onResume();
+    }
+
 
 }

@@ -33,7 +33,7 @@ public class ChoreEditView extends AppCompatActivity {
     EditText dateEntry;
     DatabaseReference dR, userdR;
     String choreId;
-    List<User> list2 = new ArrayList<>();
+    List<String> list2 = new ArrayList<>();
     private Chore chore;
     private ValueEventListener mListener;
 
@@ -45,7 +45,7 @@ public class ChoreEditView extends AppCompatActivity {
         mName  = findViewById(editName);
         mNotes = findViewById(editNotes);
         Intent ii = getIntent();
-        choreId = (String)ii.getExtras().get("id");
+        choreId = (String) ii.getExtras().get("choreId");
         dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
         mUsers = findViewById(userSpinner);
         dR.addValueEventListener(mListener = new ValueEventListener() {
@@ -86,15 +86,17 @@ public class ChoreEditView extends AppCompatActivity {
         if (mRecurring.toString() != "Set Recurring") {
             chore.setRecurring(mRecurring.getSelectedItem().toString());
         }
-        //if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
-        // chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
-        //}
+        if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
+            chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
+        }
         dR.setValue(chore);
         finish();
     }
     protected void addItemsOnUser(){
         final Spinner mUser = findViewById(userSpinner);
         final List<String> list = new ArrayList<String>();
+        list.add("Unassigned");
+        list2.add("");
 
         userdR = FirebaseDatabase.getInstance().getReference("user");
         userdR.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -103,7 +105,7 @@ public class ChoreEditView extends AppCompatActivity {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
                     list.add(user.getName());
-                    list2.add(user);
+                    list2.add(user.getId());
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_spinner_item, list);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -35,7 +35,6 @@ public class UserProfileActivity extends Activity {
         setContentView(R.layout.activity_user_profile);
         Intent ii = getIntent();
         userId = (String) ii.getExtras().get("userId");
-        System.out.println("*****************" + userId + "**********************");
         userRef = FirebaseDatabase.getInstance().getReference("user").child(userId);
         userRef.addValueEventListener(userListener = new ValueEventListener() {
             @Override
@@ -55,6 +54,7 @@ public class UserProfileActivity extends Activity {
         chores = new ArrayList<>();
         listViewChores = findViewById(R.id.choreList);
         //attaching value event listener
+        choreRef = FirebaseDatabase.getInstance().getReference("chore");
         choreRef.addValueEventListener(choreListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -96,7 +96,7 @@ public class UserProfileActivity extends Activity {
 
     }
 
-    public void viewChoreAll(View view) {
+    public void viewAllChores(View view) {
         Intent fullScheduleIntent = new Intent(UserProfileActivity.this, ChoreSchedule.class);
         fullScheduleIntent.putExtra("userId", userId);
         startActivity(fullScheduleIntent);

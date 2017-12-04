@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static ca.choremanager.R.id.editName;
@@ -32,7 +33,7 @@ public class ChoreAddView extends AppCompatActivity {
     EditText dateEntry;
     DatabaseReference dR;
     String choreId;
-    List<User> list2 = new ArrayList<>();
+    List<String> list2 = new ArrayList<>();
     private Chore chore;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,16 +69,18 @@ public class ChoreAddView extends AppCompatActivity {
         mRecurring = findViewById(recurring_spinner);
         String notes = mNotes.getText().toString();
         String recurring = mRecurring.getSelectedItem().toString();
-        User user = list2.get(mUsers.getSelectedItemPosition());
+        String user = list2.get(mUsers.getSelectedItemPosition());
 
         String id = dR.push().getKey();
-        //chore = new Chore(id,name, new Date(0,0,0), 5, recurring, notes, user);
+        chore = new Chore(id, name, new Date(0, 0, 0), 5, recurring, notes, user);
         dR.child(id).setValue(chore);
         finish();
     }
     protected void addItemsOnUser(){
         final Spinner spinner = findViewById(userSpinner);
         final List<String> list = new ArrayList<String>();
+        list.add("Unassigned");
+        list2.add("");
 
         dR = FirebaseDatabase.getInstance().getReference("user");
         dR.addValueEventListener(new ValueEventListener() {
@@ -86,7 +89,7 @@ public class ChoreAddView extends AppCompatActivity {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
                     list.add(user.getName());
-                    list2.add(user);
+                    list2.add(user.getId());
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_spinner_item, list);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

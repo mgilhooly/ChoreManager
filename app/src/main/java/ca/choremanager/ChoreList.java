@@ -31,10 +31,16 @@ public class ChoreList extends ArrayAdapter<Chore> {
 
         TextView textViewName = listViewItem.findViewById(R.id.textViewName);
         TextView textViewPrice = listViewItem.findViewById(R.id.textViewNotes);
+        TextView textViewStatus = listViewItem.findViewById(R.id.textViewStatus);
 
         Chore chore = chores.get(position);
         textViewName.setText(chore.getName());
         textViewPrice.setText(String.valueOf(chore.getDescription()));
+        if (chore.getCompleted()) {
+            textViewStatus.setText("Completed");
+        } else {
+            textViewStatus.setText("Incomplete");
+        }
         return listViewItem;
     }
 }

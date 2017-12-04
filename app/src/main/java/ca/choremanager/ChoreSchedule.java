@@ -24,18 +24,33 @@ public class ChoreSchedule extends Activity {
 
     Button buttonAddChore;
     ListView listViewChores;
-
+    User activeUser;
+    String userId;
     List<Chore> chores;
 
-    DatabaseReference databaseChores, dR;
+    DatabaseReference choreReference, userReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chore_schedule);
+        Intent ii = getIntent();
+        userId = (String) ii.getExtras().get("userId");
 
-        databaseChores = FirebaseDatabase.getInstance().getReference("chore");
+        choreReference = FirebaseDatabase.getInstance().getReference("chore");
+        userReference = FirebaseDatabase.getInstance().getReference("user");
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                activeUser = dataSnapshot.child(userId).getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         listViewChores = findViewById(R.id.listViewChores);
         buttonAddChore = findViewById(R.id.addButton);
 
@@ -45,8 +60,10 @@ public class ChoreSchedule extends Activity {
         buttonAddChore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addIntent = new Intent(ChoreSchedule.this, ChoreAddView.class);
-                startActivity(addIntent);
+                if (activeUser.getParent()) {
+                    Intent addIntent = new Intent(ChoreSchedule.this, ChoreAddView.class);
+                    startActivity(addIntent);
+                }
             }
         });
 
@@ -56,30 +73,33 @@ public class ChoreSchedule extends Activity {
                 Chore chore = chores.get(i); // Intent to view chore details
                 Intent viewIntent = new Intent(ChoreSchedule.this, ChoreView.class);
                 viewIntent.putExtra("choreId", chore.getId());
+                viewIntent.putExtra("userId", userId);
                 startActivity(viewIntent);
             }
         });
         listViewChores.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final Chore c = chores.get(i);
-                AlertDialog.Builder builder = new AlertDialog.Builder(ChoreSchedule.this);
-                builder.setMessage(R.string.dialog_message)
-                        .setTitle(R.string.dialog_title);
-                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("chore").child(c.getId());
-                        dR.removeValue();
-                        Toast.makeText(getApplicationContext(), "Chore Deleted", Toast.LENGTH_LONG).show();
-                    }
-                });
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                if (activeUser.getParent()) {
+                    final Chore c = chores.get(i);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChoreSchedule.this);
+                    builder.setMessage(R.string.dialog_message)
+                            .setTitle(R.string.dialog_title);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DatabaseReference dR = FirebaseDatabase.getInstance().getReference("chore").child(c.getId());
+                            dR.removeValue();
+                            Toast.makeText(getApplicationContext(), "Chore Deleted", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
                 return true;
             }
         });
@@ -90,7 +110,7 @@ public class ChoreSchedule extends Activity {
     protected void onStart() {
         super.onStart();
         //attaching value event listener
-        databaseChores.addValueEventListener(new ValueEventListener() {
+        choreReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
