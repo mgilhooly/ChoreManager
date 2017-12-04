@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static ca.choremanager.R.id.editName;
 import static ca.choremanager.R.id.editNotes;
+import static ca.choremanager.R.id.editPoints;
 import static ca.choremanager.R.id.recurring_spinner;
 import static ca.choremanager.R.id.userSpinner;
 
@@ -28,7 +30,7 @@ import static ca.choremanager.R.id.userSpinner;
  */
 
 public class ChoreEditView extends AppCompatActivity {
-    EditText mNotes, mName;
+    EditText mNotes, mName, mPoints;
     Spinner mRecurring, mUsers;
     EditText dateEntry;
     DatabaseReference dR, userdR;
@@ -44,6 +46,7 @@ public class ChoreEditView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mName  = findViewById(editName);
         mNotes = findViewById(editNotes);
+        mPoints = findViewById(editPoints);
         Intent ii = getIntent();
         choreId = (String) ii.getExtras().get("choreId");
         dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
@@ -60,34 +63,20 @@ public class ChoreEditView extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        addItemsOnRecurring();
         addItemsOnUser();
-    }
-
-    public void addItemsOnRecurring() {
-
-        Spinner spinner = findViewById(recurring_spinner);
-        List<String> list = new ArrayList<String>();
-        list.add("Set Recurring");
-        list.add("Not Recurring");
-        list.add("Daily");
-        list.add("Weekly");
-        list.add("Monthly");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
     }
 
     protected void editChore(View view){
         chore.setName(mName.getText().toString());
         mRecurring = findViewById(recurring_spinner);
         chore.setDescription(mNotes.getText().toString());
-        if (mRecurring.toString() != "Set Recurring") {
-            chore.setRecurring(mRecurring.getSelectedItem().toString());
-        }
         if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
             chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
+        }
+        if (mPoints.getText().toString().length() > 0) {
+            chore.setPoints(Integer.parseInt(mPoints.getText().toString()));
+        } else {
+            Toast.makeText(getApplicationContext(), "Please set the point value of the chore", Toast.LENGTH_LONG).show();
         }
         dR.setValue(chore);
         finish();

@@ -94,18 +94,21 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Reccuring"
+                    android:text="Points Available"
                     android:textSize="18sp" />
 
-                <Spinner
-                    android:id="@+id/recurring_spinner"
+                <EditText
+                    android:id="@+id/editPoints"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_height="26dp"
+                    android:layout_weight="1"
+                    android:background="#00000000"
+                    android:ems="10"
+                    android:hint="Points"
+                    android:inputType="number" />
             </LinearLayout>
         </LinearLayout>
 

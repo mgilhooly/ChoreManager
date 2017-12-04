@@ -12,8 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static ca.choremanager.R.id.change_user;
 import static ca.choremanager.R.id.choreDate;
 import static ca.choremanager.R.id.choreNotes;
 import static ca.choremanager.R.id.chorePoints;
@@ -85,6 +79,9 @@ public class ChoreView extends AppCompatActivity {
                 choreUser = dataSnapshot.child(chore.getUser()).getValue(User.class);
                 activeUser = dataSnapshot.child(userId).getValue(User.class);
                 mChoreUserName.setText(choreUser.getName());
+                if (chore.getUser().equals("")) {
+                    mChoreUserName.setText("Unassigned");
+                }
             }
 
             @Override
@@ -123,20 +120,6 @@ public class ChoreView extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void addItemsOnChangeUser() {
-        Spinner spinner = findViewById(change_user);
-        List<String> list = new ArrayList<String>();
-        list.add("Switch User");
-        list.add("Michael");
-        list.add("Murad");
-        list.add("Zelalem");
-        list.add("Farnaz");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
-    }
-
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.action_edit:
@@ -171,14 +154,17 @@ public class ChoreView extends AppCompatActivity {
     }
 
     public void completeChore(View view){
-        if (!chore.getCompleted()) {
-            choreRef.child("completed").setValue(true);
-            userRef.child(choreUser.getId()).child("points")
-                    .setValue(choreUser.getPoints() + chore.getPoints());
+        if (!chore.getUser().equals("")) {
+            if (!chore.getCompleted()) {
+                choreRef.child("completed").setValue(true);
+                userRef.child(choreUser.getId()).child("points")
+                        .setValue(choreUser.getPoints() + chore.getPoints());
+            } else {
+                Toast.makeText(getApplicationContext(), "This chore has already been completed", Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(getApplicationContext(), "This chore has already been completed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "This chore needs to be assigned before it can be completed", Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void changeToTools(View view){

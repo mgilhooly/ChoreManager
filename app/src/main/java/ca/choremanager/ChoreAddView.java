@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ca.choremanager.R.id.addPoints;
 import static ca.choremanager.R.id.editName;
 import static ca.choremanager.R.id.editNotes;
 import static ca.choremanager.R.id.recurring_spinner;
@@ -28,7 +29,7 @@ import static ca.choremanager.R.id.userSpinner;
  */
 
 public class ChoreAddView extends AppCompatActivity {
-    EditText mNotes, mName;
+    EditText mNotes, mName, mPoints;
     Spinner mRecurring, mUsers;
     EditText dateEntry;
     DatabaseReference dR;
@@ -44,23 +45,8 @@ public class ChoreAddView extends AppCompatActivity {
         mName  = findViewById(editName);
         mNotes = findViewById(editNotes);
         mUsers = findViewById(userSpinner);
-        addItemsOnRecurring();
+        mPoints = findViewById(addPoints);
         addItemsOnUser();
-    }
-
-    public void addItemsOnRecurring() {
-
-        Spinner spinner = findViewById(recurring_spinner);
-        List<String> list = new ArrayList<String>();
-        list.add("Set Recurring");
-        list.add("Not Recurring");
-        list.add("Daily");
-        list.add("Weekly");
-        list.add("Monthly");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
     }
 
     protected void addChore(View view){
@@ -68,11 +54,11 @@ public class ChoreAddView extends AppCompatActivity {
         String name = mName.getText().toString();
         mRecurring = findViewById(recurring_spinner);
         String notes = mNotes.getText().toString();
-        String recurring = mRecurring.getSelectedItem().toString();
+        Integer points = Integer.parseInt(mPoints.getText().toString());
         String user = list2.get(mUsers.getSelectedItemPosition());
 
         String id = dR.push().getKey();
-        chore = new Chore(id, name, new Date(0, 0, 0), 5, recurring, notes, user);
+        chore = new Chore(id, name, new Date(0, 0, 0), points, "", notes, user);
         dR.child(id).setValue(chore);
         finish();
     }
