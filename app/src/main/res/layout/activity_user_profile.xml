@@ -25,12 +25,6 @@
             android:orientation="horizontal"
             android:padding="16dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_delete_24dp" />
-
 
             <TextView
                 android:id="@+id/textUserName"
@@ -62,56 +56,21 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp"
-        android:text="Chore to Do"
+        android:text="My To Do List"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp" />
 
-    <View
+    <ListView
+        android:id="@+id/choreList"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_height="351dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/chorToDoRecycler"
+    <Button
+        android:id="@+id/viewAllChores"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:padding="8dp">
-
-    </android.support.v7.widget.RecyclerView>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp"
-        android:text="Chores Completed"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
-        android:background="@android:color/darker_gray" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/choreCompletedRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="8dp"
-        android:padding="8dp">
-
-    </android.support.v7.widget.RecyclerView>
+        android:onClick="viewAllChores"
+        android:text="View Chores For Whole Group" />
 
 
 </LinearLayout>

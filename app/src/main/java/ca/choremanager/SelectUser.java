@@ -1,10 +1,8 @@
 package ca.choremanager;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,57 +18,58 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChoreSchedule extends Activity {
+public class SelectUser extends Activity {
 
-    Button buttonAddChore;
-    ListView listViewChores;
+    Button buttonAddUser;
+    ListView listViewUsers;
 
-    List<Chore> chores;
+    List<User> users;
 
-    DatabaseReference databaseChores, dR;
+    DatabaseReference usersReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chore_schedule);
+        setContentView(R.layout.activity_all_users);
 
-        databaseChores = FirebaseDatabase.getInstance().getReference("chore");
-        listViewChores = findViewById(R.id.listViewChores);
-        buttonAddChore = findViewById(R.id.addButton);
+        usersReference = FirebaseDatabase.getInstance().getReference("user");
+        listViewUsers = findViewById(R.id.listViewUsers);
+        buttonAddUser = findViewById(R.id.addButton);
 
-        chores = new ArrayList<>();
+        users = new ArrayList<>();
 
         //adding an onclicklistener to button
-        buttonAddChore.setOnClickListener(new View.OnClickListener() {
+        buttonAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addIntent = new Intent(ChoreSchedule.this, ChoreAddView.class);
-                startActivity(addIntent);
+                //Intent addIntent = new Intent(SelectUser.this, ChoreAddView.class);
+                //startActivity(addIntent);
+                Toast.makeText(getApplicationContext(), "You cannot add users yet", Toast.LENGTH_LONG).show();
             }
         });
 
-        listViewChores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Chore chore = chores.get(i); // Intent to view chore details
-                Intent viewIntent = new Intent(ChoreSchedule.this, ChoreView.class);
-                viewIntent.putExtra("choreId", chore.getId());
+                User user = users.get(i); // Intent to view chore details
+                Intent viewIntent = new Intent(SelectUser.this, UserProfileActivity.class);
+                viewIntent.putExtra("userId", user.getId());
                 startActivity(viewIntent);
             }
         });
-        listViewChores.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        /*listViewUsers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final Chore c = chores.get(i);
-                AlertDialog.Builder builder = new AlertDialog.Builder(ChoreSchedule.this);
+                final User u = users.get(i);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SelectUser.this);
                 builder.setMessage(R.string.dialog_message)
                         .setTitle(R.string.dialog_title);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("chore").child(c.getId());
+                        DatabaseReference dR = FirebaseDatabase.getInstance().getReference("user").child(u.getId());
                         dR.removeValue();
-                        Toast.makeText(getApplicationContext(), "Chore Deleted", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "User Deleted", Toast.LENGTH_LONG).show();
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -82,7 +81,7 @@ public class ChoreSchedule extends Activity {
                 dialog.show();
                 return true;
             }
-        });
+        });*/
     }
 
 
@@ -90,25 +89,25 @@ public class ChoreSchedule extends Activity {
     protected void onStart() {
         super.onStart();
         //attaching value event listener
-        databaseChores.addValueEventListener(new ValueEventListener() {
+        usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 //clearing the previous artist list
-                chores.clear();
+                users.clear();
 
                 //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     //getting product
-                    Chore chore = postSnapshot.getValue(Chore.class);
+                    User user = postSnapshot.getValue(User.class);
                     //adding product to the list
-                    chores.add(chore);
+                    users.add(user);
                 }
 
                 //creating adapter
-                ChoreList choresAdapter = new ChoreList(ChoreSchedule.this, chores);
+                UserList usersAdapter = new UserList(SelectUser.this, users);
                 //attaching adapter to the listview
-                listViewChores.setAdapter(choresAdapter);
+                listViewUsers.setAdapter(usersAdapter);
             }
 
             @Override

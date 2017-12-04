@@ -17,10 +17,10 @@ public class Chore {
     private Date _deadline;
     private int _points;
     private boolean _completed;
-    private User _user;
+    private String _user;
     private DatabaseReference dR;
 
-    public Chore (String id, String name, Date deadline, int points, String recurring, String notes, User user){
+    public Chore(String id, String name, Date deadline, int points, String recurring, String notes, String user) {
         _id = id;
         _name = name;
         _deadline = deadline;
@@ -30,7 +30,6 @@ public class Chore {
         _description = notes;
         _tools = new ArrayList<Tool>();
         _user = user;
-
     }
     public Chore(){}
     public String getId () {return _id;}
@@ -54,11 +53,23 @@ public class Chore {
     public List<Tool> getTools() {return _tools;}
     public void setTools(List<Tool> tools) {_tools = tools;}
 
-    public User getUser () {return _user;}
-    public void setUser (User user){_user = user;}
+    public String getUser() {
+        return _user;
+    }
+
+    public void setUser(String user) {
+        _user = user;
+    }
 
     public String getRecurring () {return _recurring;}
     public void setRecurring (String recurring){_recurring = recurring;}
+
+    /*public void assignToUser(User user){
+        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
+        _user = user;
+        user.assignChore(this);
+        dR.setValue(this);
+    }*/
 
     public void addTool (Tool tool){
         dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
@@ -78,12 +89,10 @@ public class Chore {
         dR.setValue(this);
     }
 
-    public void completeChore(){
-        if (!_completed) {
-            dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-            _completed = true;
-            _user.addPoints(_points);
-            dR.setValue(this);
-        }
-    }
+   /* public void completeChore(){
+        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
+        _completed = true;
+        _user.addPoints(_points);
+        dR.setValue(this);
+    }*/
 }

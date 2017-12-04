@@ -15,6 +15,13 @@
         <activity
             android:name=".Toolss"
             android:theme="@style/AppTheme"></activity>
+        <activity android:name=".SelectUser">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ShoppingChoreView" />
         <activity android:name=".ChoreEditView" />
         <activity android:name=".UserProfileActivity" />
@@ -22,11 +29,7 @@
         <activity
             android:name=".ChoreSchedule"
             android:label="@string/title_activity_chore_schedule">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

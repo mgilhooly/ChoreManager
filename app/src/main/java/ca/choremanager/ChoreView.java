@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,8 +33,8 @@ import static ca.choremanager.R.id.choreUserName;
 import static ca.choremanager.R.id.recurringView;
 
 public class ChoreView extends AppCompatActivity {
-    DatabaseReference databaseChore;
-    String choreId;
+    DatabaseReference choreRef, userRef;
+    String choreId, userId;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
@@ -41,6 +42,7 @@ public class ChoreView extends AppCompatActivity {
     private Chore chore;
     private TextView mChoreUserName, mChoreDate, mChoreNotes, mChoreRecurring;
     private ValueEventListener mListener;
+    private User choreUser, activeUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +50,48 @@ public class ChoreView extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         Intent ii = getIntent();
-        choreId = (String) ii.getExtras().get("id");
+        choreId = (String) ii.getExtras().get("choreId");
+        userId = (String) ii.getExtras().get("userId");
 
         setContentView(R.layout.activity_chore_view);
         final Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        choreRef = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
+        choreRef.addValueEventListener(mListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                chore = dataSnapshot.getValue(Chore.class);
+                mChoreNotes = findViewById(choreNotes);
+                mChoreUserName = findViewById(choreUserName);
+                mChoreNotes.setText(chore.getDescription());
+                myToolbar.setTitle(chore.getName());
+                mChoreRecurring = findViewById(recurringView);
+                mChoreRecurring.setText(chore.getPoints());
+                mChoreDate = findViewById(choreDate);
+                String date = chore.getDeadline().getYear() + "-" + chore.getDeadline().getMonth() + "-" + chore.getDeadline().getDay();
+                mChoreDate.setText(date);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        userRef = FirebaseDatabase.getInstance().getReference("user");
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                choreUser = dataSnapshot.child(chore.getUser()).getValue(User.class);
+                activeUser = dataSnapshot.child(userId).getValue(User.class);
+                mChoreUserName.setText(choreUser.getName());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -75,28 +114,6 @@ public class ChoreView extends AppCompatActivity {
         };
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        addItemsOnChangeUser();
-        databaseChore = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
-        databaseChore.addValueEventListener(mListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                chore = dataSnapshot.getValue(Chore.class);
-                mChoreNotes = findViewById(choreNotes);
-                mChoreUserName = findViewById(choreUserName);
-                mChoreNotes.setText(chore.getDescription());
-                mChoreUserName.setText(chore.getUser().getName());
-                myToolbar.setTitle(chore.getName());
-                mChoreRecurring = findViewById(recurringView);
-                mChoreRecurring.setText(chore.getRecurring());
-                mChoreDate = findViewById(choreDate);
-                String date = chore.getDeadline().getYear()+"-"+chore.getDeadline().getMonth()+"-"+chore.getDeadline().getDay();
-                mChoreDate.setText(date);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
     }
 
     @Override
@@ -123,9 +140,13 @@ public class ChoreView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.action_edit:
-                Intent editIntent = new Intent(this, ChoreEditView.class);
-                editIntent.putExtra("id", choreId);
-                startActivity(editIntent);
+                if (activeUser.getParent()) {
+                    Intent editIntent = new Intent(this, ChoreEditView.class);
+                    editIntent.putExtra("choreId", choreId);
+                    startActivity(editIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "You need to be an adult before you can edit chores.", Toast.LENGTH_LONG).show();
+                }
                 return true;
             case R.id.action_delete:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -133,7 +154,7 @@ public class ChoreView extends AppCompatActivity {
                         .setTitle(R.string.dialog_title);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
+                        Toast.makeText(getApplicationContext(), "You can delete chores by long pressing from the schedule view", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -149,8 +170,10 @@ public class ChoreView extends AppCompatActivity {
     }
 
     public void completeChore(View view){
-        chore.completeChore();
-        databaseChore.setValue(chore);
+        choreRef.child("completed").setValue(true);
+        userRef.child(choreUser.getId()).child("points")
+                .setValue(choreUser.getPoints() + chore.getPoints());
+
     }
 
     public void changeToTools(View view){
@@ -164,7 +187,7 @@ public class ChoreView extends AppCompatActivity {
     }
 
     public void cancelChoreView(View view) {
-        this.finish();
+        finish();
     }
 
     @Override
@@ -176,9 +199,10 @@ public class ChoreView extends AppCompatActivity {
     public void onPause() {
 
         // Remove post value event listener
-        if (mListener != null && databaseChore != null) {
-            databaseChore.removeEventListener(mListener);
+        if (mListener != null && choreRef != null) {
+            choreRef.removeEventListener(mListener);
         }
         super.onPause();
     }
+
 }

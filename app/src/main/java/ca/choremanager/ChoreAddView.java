@@ -14,7 +14,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static ca.choremanager.R.id.editName;
@@ -72,7 +71,7 @@ public class ChoreAddView extends AppCompatActivity {
         User user = list2.get(mUsers.getSelectedItemPosition());
 
         String id = dR.push().getKey();
-        chore = new Chore(id,name, new Date(0,0,0), 5, recurring, notes, user);
+        //chore = new Chore(id,name, new Date(0,0,0), 5, recurring, notes, user);
         dR.child(id).setValue(chore);
         finish();
     }

@@ -86,9 +86,9 @@ public class ChoreEditView extends AppCompatActivity {
         if (mRecurring.toString() != "Set Recurring") {
             chore.setRecurring(mRecurring.getSelectedItem().toString());
         }
-        if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
-            chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
-        }
+        //if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
+        // chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
+        //}
         dR.setValue(chore);
         finish();
     }
