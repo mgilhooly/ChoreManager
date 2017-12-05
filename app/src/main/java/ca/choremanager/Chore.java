@@ -1,7 +1,6 @@
 package ca.choremanager;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +11,7 @@ import java.util.List;
  */
 
 public class Chore {
+    // Basically all the attributes for a chore, the constructors and getters and setters.
     List<Tool> _tools;
     private String _name, _description, _recurring, _id;
     private Date _deadline;
@@ -63,36 +63,4 @@ public class Chore {
 
     public String getRecurring () {return _recurring;}
     public void setRecurring (String recurring){_recurring = recurring;}
-
-    /*public void assignToUser(User user){
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-        _user = user;
-        user.assignChore(this);
-        dR.setValue(this);
-    }*/
-
-    public void addTool (Tool tool){
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-        _tools.add(tool);
-        dR.setValue(this);
-    }
-    public void removeTools (Tool tool){
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-        _tools.remove(tool);
-        dR.setValue(this);
-    }
-
-    public void removeUser (User user){
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-        user.removeChore(this);
-        _user = null;
-        dR.setValue(this);
-    }
-
-   /* public void completeChore(){
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(_id);
-        _completed = true;
-        _user.addPoints(_points);
-        dR.setValue(this);
-    }*/
 }

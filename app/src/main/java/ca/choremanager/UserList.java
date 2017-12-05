@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class UserList extends ArrayAdapter<User> {
-
+    // Builds a list of chores, used in the schedule and the user profile
     List<User> users;
     private Activity context;
 
@@ -26,6 +26,7 @@ public class UserList extends ArrayAdapter<User> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Fill in the blanks with the users
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.layout_user_list, null, true);
 

@@ -33,15 +33,19 @@ public class UserProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        mUserName = findViewById(textUserName);
+        mUserPoints = findViewById(textUserPoint);
+        listViewChores = findViewById(R.id.choreList);
+
         Intent ii = getIntent();
         userId = (String) ii.getExtras().get("userId");
+
         userRef = FirebaseDatabase.getInstance().getReference("user").child(userId);
         userRef.addValueEventListener(userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activeUser = dataSnapshot.getValue(User.class);
-                mUserName = findViewById(textUserName);
-                mUserPoints = findViewById(textUserPoint);
+
                 mUserName.setText(activeUser.getName());
                 mUserPoints.setText(String.valueOf(activeUser.getPoints()));
             }
@@ -50,9 +54,8 @@ public class UserProfileActivity extends Activity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        super.onStart();
+
         chores = new ArrayList<>();
-        listViewChores = findViewById(R.id.choreList);
         //attaching value event listener
         choreRef = FirebaseDatabase.getInstance().getReference("chore");
         choreRef.addValueEventListener(choreListener = new ValueEventListener() {
@@ -100,6 +103,16 @@ public class UserProfileActivity extends Activity {
         Intent fullScheduleIntent = new Intent(UserProfileActivity.this, ChoreSchedule.class);
         fullScheduleIntent.putExtra("userId", userId);
         startActivity(fullScheduleIntent);
+    }
+
+    @Override
+    public void onStop() {
+
+        // Remove post value event listener
+        if (userListener != null && userRef != null) {
+            userRef.removeEventListener(userListener);
+        }
+        super.onStop();
     }
 
 }

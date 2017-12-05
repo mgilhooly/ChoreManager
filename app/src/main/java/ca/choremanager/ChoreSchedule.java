@@ -35,10 +35,11 @@ public class ChoreSchedule extends Activity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chore_schedule);
+        // Get the current user
         Intent ii = getIntent();
+        // Find the current user's ID
         userId = (String) ii.getExtras().get("userId");
-
-        choreReference = FirebaseDatabase.getInstance().getReference("chore");
+        // Then get the current user from the database using their Id
         userReference = FirebaseDatabase.getInstance().getReference("user");
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -51,9 +52,11 @@ public class ChoreSchedule extends Activity {
 
             }
         });
+        // Find all the items that need to be in the view
         listViewChores = findViewById(R.id.listViewChores);
         buttonAddChore = findViewById(R.id.addButton);
-
+        // Create the reference to the chores and the list of chores
+        choreReference = FirebaseDatabase.getInstance().getReference("chore");
         chores = new ArrayList<>();
 
         //adding an onclicklistener to button
@@ -66,7 +69,7 @@ public class ChoreSchedule extends Activity {
                 }
             }
         });
-
+        // Add on click listener to chore list
         listViewChores.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -77,6 +80,7 @@ public class ChoreSchedule extends Activity {
                 startActivity(viewIntent);
             }
         });
+        // Add long click listener to delete a chore
         listViewChores.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -109,19 +113,19 @@ public class ChoreSchedule extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        //attaching value event listener
+        //attaching value event listener for chores
         choreReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                //clearing the previous artist list
+                //clearing the previous chore list
                 chores.clear();
 
                 //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    //getting product
+                    //getting chore
                     Chore chore = postSnapshot.getValue(Chore.class);
-                    //adding product to the list
+                    //adding chore to the list
                     chores.add(chore);
                 }
 

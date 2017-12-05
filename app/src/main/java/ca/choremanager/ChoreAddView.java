@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,10 +14,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ca.choremanager.R.id.addDate;
 import static ca.choremanager.R.id.addPoints;
 import static ca.choremanager.R.id.editName;
 import static ca.choremanager.R.id.editNotes;
@@ -46,19 +50,40 @@ public class ChoreAddView extends AppCompatActivity {
         mNotes = findViewById(editNotes);
         mUsers = findViewById(userSpinner);
         mPoints = findViewById(addPoints);
+        dateEntry = findViewById(addDate);
+
         addItemsOnUser();
     }
 
     protected void addChore(View view){
+        Integer points;
+        Date d = new Date();
         dR = FirebaseDatabase.getInstance().getReference("chore");
         String name = mName.getText().toString();
         mRecurring = findViewById(recurring_spinner);
         String notes = mNotes.getText().toString();
-        Integer points = Integer.parseInt(mPoints.getText().toString());
+        if (mPoints.getText().toString().length() > 0) {
+            points = Integer.parseInt(mPoints.getText().toString());
+        } else {
+            Toast.makeText(getApplicationContext(), "Please set the point value of the chore", Toast.LENGTH_LONG).show();
+            return;
+        }
+        SimpleDateFormat dfDate_m = new SimpleDateFormat("ddMMyyyy");
+        try {
+            String str = dateEntry.getText().toString();
+            if (str.length() != 8) {
+                Toast.makeText(getApplicationContext(), "Please enter the deadline in the DDMMYYYY format", Toast.LENGTH_LONG).show();
+                return;
+            } else {
+                d = dfDate_m.parse(str);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         String user = list2.get(mUsers.getSelectedItemPosition());
 
         String id = dR.push().getKey();
-        chore = new Chore(id, name, new Date(0, 0, 0), points, "", notes, user);
+        chore = new Chore(id, name, d, points, "", notes, user);
         dR.child(id).setValue(chore);
         finish();
     }

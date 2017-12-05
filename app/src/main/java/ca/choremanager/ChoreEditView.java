@@ -15,13 +15,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import static ca.choremanager.R.id.editDate;
 import static ca.choremanager.R.id.editName;
 import static ca.choremanager.R.id.editNotes;
 import static ca.choremanager.R.id.editPoints;
-import static ca.choremanager.R.id.recurring_spinner;
 import static ca.choremanager.R.id.userSpinner;
 
 
@@ -57,6 +60,7 @@ public class ChoreEditView extends AppCompatActivity {
                 chore = dataSnapshot.getValue(Chore.class);
                 mName.setText(chore.getName());
                 mNotes.setText(chore.getDescription());
+                mPoints.setText(Integer.toString(chore.getPoints()));
             }
 
             @Override
@@ -68,7 +72,20 @@ public class ChoreEditView extends AppCompatActivity {
 
     protected void editChore(View view){
         chore.setName(mName.getText().toString());
-        mRecurring = findViewById(recurring_spinner);
+        dateEntry = findViewById(editDate);
+        SimpleDateFormat dfDate_m = new SimpleDateFormat("ddMMyyyy");
+        try {
+            String str = dateEntry.getText().toString();
+            if (str.length() != 8) {
+                Toast.makeText(getApplicationContext(), "Please enter the deadline in the DDMMYYYY format", Toast.LENGTH_LONG).show();
+                return;
+            } else {
+                Date d = dfDate_m.parse(str);
+                chore.setDeadline(d);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         chore.setDescription(mNotes.getText().toString());
         if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
             chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
@@ -77,7 +94,9 @@ public class ChoreEditView extends AppCompatActivity {
             chore.setPoints(Integer.parseInt(mPoints.getText().toString()));
         } else {
             Toast.makeText(getApplicationContext(), "Please set the point value of the chore", Toast.LENGTH_LONG).show();
+            return;
         }
+
         dR.setValue(chore);
         finish();
     }

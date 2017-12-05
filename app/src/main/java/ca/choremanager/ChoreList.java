@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class ChoreList extends ArrayAdapter<Chore> {
-
+    // Builds a list of chores, used in the schedule and the user profile
     List<Chore> chores;
     private Activity context;
 
@@ -26,16 +26,17 @@ public class ChoreList extends ArrayAdapter<Chore> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Fill in the blanks for to see the chore in a list
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.layout_chore_list, null, true);
 
         TextView textViewName = listViewItem.findViewById(R.id.textViewName);
-        TextView textViewPrice = listViewItem.findViewById(R.id.textViewNotes);
+        TextView textViewNotes = listViewItem.findViewById(R.id.textViewNotes);
         TextView textViewStatus = listViewItem.findViewById(R.id.textViewStatus);
 
         Chore chore = chores.get(position);
         textViewName.setText(chore.getName());
-        textViewPrice.setText(String.valueOf(chore.getDescription()));
+        textViewNotes.setText(String.valueOf(chore.getDescription()));
         if (chore.getCompleted()) {
             textViewStatus.setText("Completed");
         } else {
