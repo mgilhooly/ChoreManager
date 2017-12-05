@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "26.0.1"
     defaultConfig {
-        applicationId "ca.uottawa.farnaz.user"
+        applicationId "ca.uottawa.farnaz.user3"
         minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
