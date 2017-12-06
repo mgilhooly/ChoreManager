@@ -66,6 +66,8 @@ public class ChoreSchedule extends Activity {
                 if (activeUser.getParent()) {
                     Intent addIntent = new Intent(ChoreSchedule.this, ChoreAddView.class);
                     startActivity(addIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "You need to be an adult to make a chore", Toast.LENGTH_LONG).show();
                 }
             }
         });

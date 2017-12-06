@@ -33,34 +33,41 @@ import static ca.choremanager.R.id.userSpinner;
  */
 
 public class ChoreEditView extends AppCompatActivity {
-    EditText mNotes, mName, mPoints;
-    Spinner mRecurring, mUsers;
+    EditText mNotes, mName, mPoints, mDate;
+    Spinner mUsers;
     EditText dateEntry;
     DatabaseReference dR, userdR;
     String choreId;
-    List<String> list2 = new ArrayList<>();
+    List<String> idList = new ArrayList<>();
     private Chore chore;
     private ValueEventListener mListener;
 
     protected void onCreate(Bundle savedInstanceState) {
-        List<String> list2 = new ArrayList<String>();
-         setTheme(R.style.AppTheme);
-         setContentView(R.layout.activity_chore_edit);
+        setTheme(R.style.AppTheme);
+        setContentView(R.layout.activity_chore_edit);
         super.onCreate(savedInstanceState);
+
+        Intent ii = getIntent();
+        choreId = (String) ii.getExtras().get("choreId");
+        // Get all fieldss
         mName  = findViewById(editName);
         mNotes = findViewById(editNotes);
         mPoints = findViewById(editPoints);
-        Intent ii = getIntent();
-        choreId = (String) ii.getExtras().get("choreId");
-        dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
         mUsers = findViewById(userSpinner);
+        mDate = findViewById(editDate);
+        mUsers = findViewById(userSpinner);
+
+        dR = FirebaseDatabase.getInstance().getReference("chore").child(choreId);
         dR.addValueEventListener(mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // Set all fields using preexisting data
                 chore = dataSnapshot.getValue(Chore.class);
                 mName.setText(chore.getName());
                 mNotes.setText(chore.getDescription());
                 mPoints.setText(Integer.toString(chore.getPoints()));
+                SimpleDateFormat dfDate_m = new SimpleDateFormat("ddMMyyyy");
+                mDate.setText(dfDate_m.format(chore.getDeadline()));
             }
 
             @Override
@@ -71,7 +78,9 @@ public class ChoreEditView extends AppCompatActivity {
     }
 
     protected void editChore(View view){
+        // set the name to whatever is in the text field
         chore.setName(mName.getText().toString());
+        // Set the date to the contents of the date field using SimpleDateFormat
         dateEntry = findViewById(editDate);
         SimpleDateFormat dfDate_m = new SimpleDateFormat("ddMMyyyy");
         try {
@@ -86,38 +95,41 @@ public class ChoreEditView extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        // Set description to the contents of the notes field
         chore.setDescription(mNotes.getText().toString());
-        if (list2.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
-            chore.setUser(list2.get(mUsers.getSelectedItemPosition()));
+        // Set the assigned user
+        if (idList.get(mUsers.getSelectedItemPosition()) != chore.getUser()) {
+            chore.setUser(idList.get(mUsers.getSelectedItemPosition()));
         }
+        // Set the points to the contents of the text field
         if (mPoints.getText().toString().length() > 0) {
             chore.setPoints(Integer.parseInt(mPoints.getText().toString()));
         } else {
             Toast.makeText(getApplicationContext(), "Please set the point value of the chore", Toast.LENGTH_LONG).show();
             return;
         }
-
+        // Set value of chore using the updated chore
         dR.setValue(chore);
         finish();
     }
     protected void addItemsOnUser(){
-        final Spinner mUser = findViewById(userSpinner);
-        final List<String> list = new ArrayList<String>();
-        list.add("Unassigned");
-        list2.add("");
+        // Add all the user names to the user selector spinner
+        final List<String> nameList = new ArrayList<String>();
+        // add the unassigned user and empty user id
+        nameList.add("Unassigned");
+        idList.add("");
 
+        // Get all of the users
         userdR = FirebaseDatabase.getInstance().getReference("user");
         userdR.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    // Get each user
                     User user = snapshot.getValue(User.class);
-                    list.add(user.getName());
-                    list2.add(user.getId());
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                            android.R.layout.simple_spinner_item, list);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mUser.setAdapter(dataAdapter);
+                    // Extract the name ans id
+                    nameList.add(user.getName());
+                    idList.add(user.getId());
                 }
             }
 
@@ -126,6 +138,11 @@ public class ChoreEditView extends AppCompatActivity {
 
             }
         });
+        // Set the adapter to addapt the names to the spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_spinner_item, nameList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mUsers.setAdapter(dataAdapter);
     }
     protected void cancelEdit(View view){
         finish();

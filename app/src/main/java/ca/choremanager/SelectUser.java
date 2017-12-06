@@ -48,19 +48,21 @@ public class SelectUser extends Activity {
         buttonAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Start building the dialog to add a user
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SelectUser.this);
                 LayoutInflater inflater = getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.dialog_add_user, null);
                 dialogBuilder.setView(dialogView);
+                // Set references to all items in dialog
                 final EditText addUserName = dialogView.findViewById(R.id.addUserText);
                 final Switch isParent = dialogView.findViewById(R.id.isParent);
                 final Button buttonAdd = dialogView.findViewById(R.id.confirmAdd);
                 final Button buttonCancel = dialogView.findViewById(R.id.cancelAdd);
-
+                // Set dialog title
                 dialogBuilder.setTitle("Add New User");
                 final AlertDialog b = dialogBuilder.create();
                 b.show();
-
+                // When user clicks to add a user, create user using name and if the user is a parent
                 buttonAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -70,6 +72,7 @@ public class SelectUser extends Activity {
                             String id = usersReference.push().getKey();
                             User u = new User(id, name, parent, "");
                             usersReference.child(id).setValue(u);
+                            // End dialog
                             b.dismiss();
                         }
                     }
@@ -93,10 +96,13 @@ public class SelectUser extends Activity {
                 startActivity(viewIntent);
             }
         });
+        // Long click to delete a user profile
         listViewUsers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Get the user to delete
                 final User u = users.get(i);
+                // Build a long confirming the user's intention to delete the user
                 AlertDialog.Builder builder = new AlertDialog.Builder(SelectUser.this);
                 builder.setMessage("Are you sure you want to continue? Continuing will permanently delete this user and all of their information. ")
                         .setTitle("Delete User");
